@@ -22,6 +22,23 @@ module Api
         end
       end
 
+      def update
+        todo = Todo.find(params[:id])
+
+        if todo.update_attributes(todo_params)
+          render json: {status: 'SUCCESS', message:'Updated a todo list', data:todo}, status: :ok
+        else
+          render json: {status: 'ERROR', message:'Todo list not updated', data:todo.error}, status: :unprocessable_entity
+        end
+      end
+
+      def destroy
+        todo = Todo.find(params[:id])
+
+        todo.destroy
+        render json: {status: 'SUCCESS', message:'Deleted list', data:todo}, status: :ok
+      end
+
       private
         def todo_params
           params.permit(:list)
